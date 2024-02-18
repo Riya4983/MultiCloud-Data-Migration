@@ -1,23 +1,11 @@
 # MultiCloud-Data-Migration
-**<h1>MultiCloud-Data-Migration </h1>**
+
 <h2>Description</h2>
-<h2>Deployment</h2>
-Steps in Amazon Web Services (AWS)
-Creating the terraform-en-1 user using the IAM service
-Access the AWS console here and log in with your newly created account.
-In the search bar, type IAM. In the Services section, click on IAM.
-Click on Users and then Add users, enter the name terraform-en-1 and click Next to create a programmatic type user.
-Creating the Access Key for the terraform-en-1 user using the IAM service
-Access the terraform-en-1 user.
-Click on Create access key.
-Steps in Google Cloud Platform (GCP)
-Preparing the environment to run Terraform
-Access the Google Cloud Console here and log in with your newly created account.
-Open the Cloud Shell.
-Download the mission1.zip file in the Google Cloud shell using the wget command: wget https://tcb-public-events.s3.amazonaws.com/icp/mission1.zip.
-Upload the key.csv file to the Cloud Shell using the browser.
-Verify if the mission1.zip and key.csv files are in the folder in the Cloud Shell using the command below:
-unzip mission1.zip
-mv key.csv mission1/en
-cd mission1/en
-chmod +x *.sh
+This project implements a MultiCloud Architecture using Terraform to deploy resources across Amazon Web Services (AWS) and Google Cloud Platform (GCP). It involves the following key steps:
+1. Setting up IAM users, access keys, and preparing the environment for Terraform deployment in both AWS and GCP.
+2. Deploying an application named Luxxy for COVID-19 testing, including database setup, Docker image creation, and Kubernetes deployment.
+3.  Migrating database and PDF files between GCP Cloud SQL and AWS S3, ensuring seamless integration and data consistency.
+
+For instance, a hotel can utilize this MultiCloud platform to maintain the COVID-19 test results of its guests securely. The application ensures efficient management of guest information, facilitating easy access to test results and ensuring compliance with health regulations.
+
+By following the step-by-step instructions provided in the README file, users can successfully deploy, manage, and migrate resources in a MultiCloud environment, achieving a robust and scalable infrastructure for their applications.
