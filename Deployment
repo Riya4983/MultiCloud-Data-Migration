@@ -1,11 +1,172 @@
-<h1>Steps in Amazon Web Services (AWS)<h1>
-<h2>Creating the terraform-en-1 user using the IAM service<h2>
+Steps in Amazon Web Services (AWS)
+Creating the terraform-en-1 user using the IAM service
 1. Access the AWS console and log in with your newly created account.
 2. In the search bar, type IAM. In the Services section, click on IAM.
 3. Click on Users and then Add users, enter the name terraform-en-1 and click Next to create a programmatic type user.
 
-<h2>Creating the Access Key for the terraform-en-1 user using the IAM service<h2>
+Creating the Access Key for the terraform-en-1 user using the IAM service
 1. Access the terraform-en-1 user.
 2. Create access key and store it securely.
 
-<h1>Steps in Google Cloud Platform (GCP)<h1>
+Steps in Google Cloud Platform (GCP)
+Preparing the environment to run Terraform
+1. Access the Google Cloud Console and log in with your newly created account.
+2. In the Cloud Shell, Download the mission1.zip file in the Google Cloud shell using the wget command: wget https://tcb-public-events.s3.amazonaws.com/icp/mission1.zip.
+3. Upload the key.csv file to the Cloud Shell using the browser.
+4. Verify if the mission1.zip and key.csv files are in the folder in the Cloud Shell using the command below: 
+
+unzip mission1.zip
+mv key.csv mission1/en
+cd mission1/en
+chmod +x *.sh
+
+Execute the following commands to prepare the AWS and GCP environment:
+
+mkdir -p ~/.aws/
+touch ~/.aws/credentials_multiclouddeploy
+./aws_set_credentials.sh key.csv
+GOOGLE_CLOUD_PROJECT_ID=$(gcloud config get-value project)
+gcloud config set project $GOOGLE_CLOUD_PROJECT_ID
+./gcp_set_project.sh
+
+Execute the commands to enable the Kubernetes, Container Registry, Cloud SQL APIs, Compute Engine, and Service Networking:
+
+gcloud services enable containerregistry.googleapis.com
+gcloud services enable container.googleapis.com
+gcloud services enable sqladmin.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com
+gcloud services enable serviceusage.googleapis.com
+gcloud services enable compute.googleapis.com
+gcloud services enable servicenetworking.googleapis.com --project=$GOOGLE_CLOUD_PROJECT_ID
+
+Running Terraform to provision MultiCloud infrastructure in AWS and Google Cloud: 
+Execute the following commands to provision infrastructure resources:
+
+cd ~/mission1/en/terraform/
+terraform init
+terraform plan
+terraform apply
+
+Steps in Amazon Web Services (AWS)
+Creating the luxxy-covid-testing-system-en-app1 user using the IAM service
+1. Access the AWS console and go to IAM service.
+2. Under Access management, click on "Users," then "Add users."
+3. Insert the User name luxxy-covid-testing-system-en-app1 and click Next to create a programmatic user.
+4. On Set permissions, Permissions options, click "Attach policies directly" button.
+5. Select AmazonS3FullAccess.
+6. Review all details and click "Create user."
+
+Steps to create access key:
+1. Click on the user you have created.
+2. Go to the Security credentials tab.
+3. Scroll down and go to Access keys section.
+4. Click on Create access key.
+5. Select Command Line Interface (CLI) and check the I understand the above recommendation and want to proceed to create an access key checkbox.
+6. Click on Create access key.
+7. Click on Download .csv file.
+8. Rename the downloaded .csv file to luxxy-covid-testing-system-en-app1.csv.
+
+Steps in Google Cloud Platform (GCP)
+Creating a new user and preparing the environment
+
+1. Navigate to Cloud SQL instance and create a new user app with the password welcome123456 on Cloud SQL MySQL database.
+2. Connect to Google Cloud Shell and download the mission2 files:
+
+cd ~
+wget https://tcb-public-events.s3.amazonaws.com/icp/mission2.zip
+unzip mission2.zip
+
+Connect to the MySQL DB running on Cloud SQL:
+
+mysql --host=<replace_with_public_ip_cloudsql> --port=3306 -u app -p
+
+Once connected, create the products table for testing purposes:
+
+use dbcovidtesting;
+source ~/mission2/en/db/create_table.sql;
+show tables;
+exit;
+
+Enable Cloud Build API via Cloud Shell:
+
+gcloud services enable cloudbuild.googleapis.com
+
+Build the Docker image and push it to Google Container Registry:select * from records;
+exit;
+
+
+GOOGLE_CLOUD_PROJECT_ID=$(gcloud config get-value project)
+cd ~/mission2/en/app
+gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT_ID/luxxy-covid-testing-s
+
+Open the Cloud Editor and edit the Kubernetes deployment file luxxy-covid-testing-system.yaml. Update the variables on line 33 with your <PROJECT_ID>, on line 42 with AWS Bucket name and keys, and on line 48 with Cloud SQL Database Private IP. 
+Connect to the GKE (Google Kubernetes Engine) cluster via Console and deploy the application Luxxy:
+
+cd ~/mission2/en/kubernetes
+kubectl apply -f luxxy-covid-testing-system.yaml
+
+Under GKE > Workloads > Exposing Services, get the application Public IP. You should see the app up & running!
+(Optional) Download a sample COVID testing PDF and add an entry in the application:
+
+Steps in Google Cloud Platform (Database Migration)
+1. Connect to Google Cloud Shell.
+2. Download the dump using wget:
+cd ~
+wget https://tcb-public-events.s3.amazonaws.com/icp/mission3.zip
+unzip mission3.zip
+3. Connect to MySQL DB running on Cloud SQL:
+mysql --host=<replace_with_public_ip_cloudsql> --port=3306 -u app -p
+4. Import the dump on Cloud SQL:
+
+use dbcovidtesting;
+source ~/mission3/en/db/db_dump.sql;
+Check if the data got imported correctly:
+
+select * from records;
+exit;
+
+For the Part 3 of your project, you can structure the README file as follows:
+
+Hands-on Project - Mission 3
+This section concludes the project by migrating data and files in both Google Cloud Platform (GCP) and Amazon Web Services (AWS) environments.
+
+Steps in Google Cloud Platform (Database Migration)
+Connect to Google Cloud Shell.
+
+Download the dump using wget:
+
+bash
+Copy code
+cd ~
+wget https://tcb-public-events.s3.amazonaws.com/icp/mission3.zip
+unzip mission3.zip
+Connect to MySQL DB running on Cloud SQL:
+bash
+Copy code
+mysql --host=<replace_with_public_ip_cloudsql> --port=3306 -u app -p
+Import the dump on Cloud SQL:
+sql
+Copy code
+use dbcovidtesting;
+source ~/mission3/en/db/db_dump.sql;
+Check if the data got imported correctly:
+sql
+Copy code
+select * from records;
+exit;
+
+Steps in Amazon Web Services (PDF Files Migration)
+1. Connect to the AWS Cloud Shell.
+2. Download the PDF files:
+wget https://tcb-public-events.s3.amazonaws.com/icp/mission3.zip
+unzip mission3.zip
+Sync PDF Files with your AWS S3 used for COVID-19 Testing Status System. Replace the bucket name with yours:
+cd mission3/en/pdf_files
+aws s3 sync . s3://luxxy-covid-testing-system-pdf-en-xxxx
+
+Test the application. Upon migrating the data and files, you should be able to see the entries under the “View Guest Results” page.
+
+
+
+
+
