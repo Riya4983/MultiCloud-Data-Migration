@@ -1,0 +1,11 @@
+<h1>Steps in Amazon Web Services (AWS)<h1>
+<h2>Creating the terraform-en-1 user using the IAM service<h2>
+1. Access the AWS console and log in with your newly created account.
+2. In the search bar, type IAM. In the Services section, click on IAM.
+3. Click on Users and then Add users, enter the name terraform-en-1 and click Next to create a programmatic type user.
+
+<h2>Creating the Access Key for the terraform-en-1 user using the IAM service<h2>
+1. Access the terraform-en-1 user.
+2. Create access key and store it securely.
+
+<h1>Steps in Google Cloud Platform (GCP)<h1>
